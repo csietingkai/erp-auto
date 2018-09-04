@@ -2,18 +2,17 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include <gtkmm.h>
+#include <gtkmm/application.h>
+
+#include "src/helloworld.h"
 
 using namespace std;
-using namespace Glib;
-using namespace Gtk;
 
 int main(int argc, char* argv[])
 {
-	RefPtr<Application> app = Application::create(argc, argv);
+	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv);
 	
-	Window window;
-	window.set_default_size(200, 200);
+	HelloWorld helloworld;
 	
-	return app->run(window);
+	return app->run(helloworld);
 }
