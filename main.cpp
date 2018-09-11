@@ -5,6 +5,8 @@
 #include <gtkmm/application.h>
 
 #include "src/helloworld.h"
+#include "src/ExampleWindow.h"
+#include "src/View.h"
 
 using namespace std;
 
@@ -12,7 +14,7 @@ int main(int argc, char* argv[])
 {
 	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv);
 	
-	HelloWorld helloworld;
+	View window;
 	
-	return app->run(helloworld);
+	return app->run(window);
 }
