@@ -4,15 +4,15 @@
 #include <string>
 #include <gtkmm/application.h>
 
-#include "src/helloworld.h"
-#include "src/ExampleWindow.h"
 #include "src/View.h"
 
 using namespace std;
+using namespace Gtk;
+using namespace Glib;
 
 int main(int argc, char* argv[])
 {
-	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv);
+	RefPtr<Application> app = Application::create(argc, argv);
 	
 	View window;
 	
