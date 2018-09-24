@@ -1,9 +1,11 @@
 #include <iostream>
+#include <fstream>
 
 #include "View.h"
 
 using namespace std;
 using namespace Gtk;
+using namespace Glib;
 
 // constructors
 View::View()
@@ -50,16 +52,16 @@ void View::set_attribute()
 	ety_filename.set_sensitive(false);
 	ety_filename.set_text(filename);
 	
-	btn_select_file.set_label(SELECT_FILE);
+	btn_select_file.set_label(STR_SELECT_FILE);
 	
 	sbox2.set_border_width(SPACING_BORDER_SIZE);
 	
 	btnbox_start_and_close.set_spacing(BUTTON_SPACING_SIZE);
 	btnbox_start_and_close.set_layout(Gtk::BUTTONBOX_END);
 	
-	btn_start.set_label(START);
+	btn_start.set_label(STR_START);
 	
-	btn_close.set_label(CLOSE);
+	btn_close.set_label(STR_CLOSE);
 }
 
 void View::set_signal_handler()
@@ -80,76 +82,60 @@ void View::set_signal_handler()
 	});
 }
 
-void View::set_filename(const string name)
-{
-	ety_filename.set_text(name);
-}
-
 // private functions
 void View::on_btn_select_click()
 {
-	cout << "select file" << endl;
-	
 	FileChooserDialog dialog("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN);
 	dialog.set_transient_for(*this);
+	
+	//Add response buttons the the dialog:
+	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+	dialog.add_button("_Open", Gtk::RESPONSE_OK);
 
-  //Add response buttons the the dialog:
-  dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-  dialog.add_button("_Open", Gtk::RESPONSE_OK);
-
-  //Add filters, so that only certain file types can be selected:
-
-  auto filter_text = Gtk::FileFilter::create();
-  filter_text->set_name("Text files");
-  filter_text->add_mime_type("text/plain");
-  dialog.add_filter(filter_text);
-
-  auto filter_cpp = Gtk::FileFilter::create();
-  filter_cpp->set_name("C/C++ files");
-  filter_cpp->add_mime_type("text/x-c");
-  filter_cpp->add_mime_type("text/x-c++");
-  filter_cpp->add_mime_type("text/x-c-header");
-  dialog.add_filter(filter_cpp);
-
-  auto filter_any = Gtk::FileFilter::create();
-  filter_any->set_name("Any files");
-  filter_any->add_pattern("*");
-  dialog.add_filter(filter_any);
-
-  //Show the dialog and wait for a user response:
-  int result = dialog.run();
-
-  //Handle the response:
-  switch(result)
-  {
-    case(Gtk::RESPONSE_OK):
-    {
-      std::cout << "Open clicked." << std::endl;
-
-      //Notice that this is a std::string, not a Glib::ustring.
-      std::string filename = dialog.get_filename();
-      std::cout << "File selected: " <<  filename << std::endl;
-      break;
-    }
-    case(Gtk::RESPONSE_CANCEL):
-    {
-      std::cout << "Cancel clicked." << std::endl;
-      break;
-    }
-    default:
-    {
-      std::cout << "Unexpected button clicked." << std::endl;
-      break;
-    }
-  }
+	//Add filters, so that only certain file types can be selected:
+	RefPtr<FileFilter> filter_excel = FileFilter::create();
+	filter_excel->set_name("Excel files");
+	filter_excel->add_mime_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // .xlsx
+	filter_excel->add_mime_type("application/vnd.ms-excel"); // .xls
+	dialog.add_filter(filter_excel);
+	
+	int result = dialog.run();
+	
+	switch(result)
+	{
+		case Gtk::RESPONSE_OK:
+			file_full_path = dialog.get_filename();
+			filename = basename(dialog.get_filename().c_str());
+			set_filename(filename);
+			break;
+		case Gtk::RESPONSE_CANCEL:
+			break;
+		default:
+			break;
+	}
 }
 
 void View::on_btn_start_click()
 {
-	cout << "start" << endl;
+	cout << file_full_path << endl;
+	ifstream xlsx(file_full_path, ios::in | ios::binary);
+	string file_line;
+	if (xlsx.is_open())
+	{
+		while(getline(xlsx, file_line))
+		{
+			cout << file_line << endl;
+		}
+		xlsx.close();
+	}
 }
 
 void View::on_btn_close_click()
 {
 	hide();
+}
+
+void View::set_filename(const string name)
+{
+	ety_filename.set_text(name);
 }
