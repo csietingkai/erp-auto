@@ -1,8 +1,8 @@
 #include <cstdio>
 #include <cstdlib>
+#include <gtkmm.h>
 #include <iostream>
 #include <string>
-#include <gtkmm/application.h>
 
 #include "src/View.h"
 

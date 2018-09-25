@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include "View.h"
+#include "XlsxData.h"
 
 using namespace std;
 using namespace Gtk;
