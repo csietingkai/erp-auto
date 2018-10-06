@@ -119,7 +119,7 @@ void View::on_btn_select_click()
 void View::on_btn_start_click()
 {
 	cout << file_full_path << endl;
-	ifstream xlsx(file_full_path, ios::in | ios::binary);
+	/*ifstream xlsx(file_full_path, ios::in | ios::binary);
 	string file_line;
 	if (xlsx.is_open())
 	{
@@ -128,15 +128,18 @@ void View::on_btn_start_click()
 			cout << file_line << endl;
 		}
 		xlsx.close();
-	}
+	}*/
+	// minimize the window
+	iconify();
 }
 
 void View::on_btn_close_click()
 {
-	hide();
+	close();
 }
 
 void View::set_filename(const string name)
 {
+	// show the select file name
 	ety_filename.set_text(name);
 }

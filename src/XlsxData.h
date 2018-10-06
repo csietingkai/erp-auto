@@ -12,15 +12,21 @@ enum DC_code
 class XlsxRow
 {
 	public:
-		XlsxRow();
+		XlsxRow(const DC_code dc_value, const int subject_id, const int money, const string description);
+		XlsxRow(const DC_code dc_value, const int subject_id, const int money, const string description, const string li_chong);
+		
+		const DC_code get_dc_code() const;
+		const int get_subject_id() const;
+		const int get_money() const;
+		const string get_description() const;
+		const string get_li_chong() const;
 		
 	private:
-		int index;
-		DC_code value;
-		int subject_id;
-		int money;
-		string description;
-		string li_chong;
+		DC_code dc_value;		// 借/貸
+		int subject_id;			// 科目編號
+		int money;				// 金額
+		string description;		// 摘要
+		string li_chong;		// 立沖帳目
 };
 
 class XlsxData
