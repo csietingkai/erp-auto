@@ -2,7 +2,7 @@
 #include <fstream>
 
 #include "View.h"
-#include "XlsxData.h"
+#include "FileData.h"
 
 using namespace std;
 using namespace Gtk;
@@ -89,16 +89,21 @@ void View::on_btn_select_click()
 	FileChooserDialog dialog("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN);
 	dialog.set_transient_for(*this);
 	
-	//Add response buttons the the dialog:
+	// Add response buttons the the dialog:
 	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
 	dialog.add_button("_Open", Gtk::RESPONSE_OK);
 
-	//Add filters, so that only certain file types can be selected:
+	// Add filters, so that only certain file types can be selected:
 	RefPtr<FileFilter> filter_excel = FileFilter::create();
 	filter_excel->set_name("Excel files");
 	filter_excel->add_mime_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // .xlsx
 	filter_excel->add_mime_type("application/vnd.ms-excel"); // .xls
-	dialog.add_filter(filter_excel);
+	//dialog.add_filter(filter_excel);
+	
+	RefPtr<FileFilter> filter_csv = FileFilter::create();
+	filter_csv->set_name("CSV files");
+	filter_csv->add_mime_type("text/csv"); // .csv
+	dialog.add_filter(filter_csv);
 	
 	int result = dialog.run();
 	
@@ -119,18 +124,13 @@ void View::on_btn_select_click()
 void View::on_btn_start_click()
 {
 	cout << file_full_path << endl;
-	/*ifstream xlsx(file_full_path, ios::in | ios::binary);
-	string file_line;
-	if (xlsx.is_open())
+	if(!file_full_path.empty())
 	{
-		while(getline(xlsx, file_line))
-		{
-			cout << file_line << endl;
-		}
-		xlsx.close();
-	}*/
-	// minimize the window
-	iconify();
+		// minimize the window
+		//iconify();
+		
+		FileData data(file_full_path);
+	}
 }
 
 void View::on_btn_close_click()

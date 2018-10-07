@@ -40,7 +40,7 @@ class View : public Window
 		void on_btn_close_click();
 		void set_filename(const string name);
 		
-		string filename = "selct a xlsx file";
+		string filename = "select a csv file";
 		string file_full_path = "";
 		
 		const string WINDOW_TITLE = "SmartERP Auto Action";
