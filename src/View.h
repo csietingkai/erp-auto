@@ -1,11 +1,21 @@
 #ifndef VIEW_H_
 #define VIEW_H_
 
+#include <fstream>
 #include <gtkmm.h>
+#include <iostream>
+#include <map>
+#include "FileData.h"
 
 using namespace std;
 using namespace Gtk;
 using namespace Glib;
+
+const static map<char, int> KEY_BIND = 
+{
+	{ 'C', 67 },
+	{ 'D', 68 }
+};
 
 class View : public Window
 {
@@ -38,7 +48,9 @@ class View : public Window
 		void on_btn_select_click();
 		void on_btn_start_click();
 		void on_btn_close_click();
+		const bool on_key_press(GdkEventKey* event);
 		void set_filename(const string name);
+		void auto_action(const FileData datas);
 		
 		string filename = "select a csv file";
 		string file_full_path = "";

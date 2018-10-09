@@ -1,7 +1,5 @@
 #include "FileData.h"
 
-using namespace std;
-
 /* ================= class FileRow ================= */
 
 // constructors
@@ -39,14 +37,15 @@ const string FileRow::get_li_chong() const
 // operators
 ostream& operator <<(ostream& strm, const FileRow& other)
 {
+	const char SLICE = ' ';
 	strm << (char)other.get_dc_code();
-	strm << " ";
+	strm << SLICE;
 	strm << other.get_subject_id();
-	strm << " ";
+	strm << SLICE;
 	strm << other.get_money();
-	strm << " ";
+	strm << SLICE;
 	strm << other.get_description();
-	strm << " ";
+	strm << SLICE;
 	strm << other.get_li_chong();
 	return strm;
 }
@@ -71,16 +70,33 @@ FileData::FileData(const string filename)
 }
 
 // getters
-const FileRow FileData::get(const int index)
+const FileRow FileData::get(const unsigned int index)
 {
-	if(index >= 0 && index < this->datas.size())
-	{
-		return this->datas[index];
-	}
-	else
+	if (index < 0 || index >= this->datas.size())
 	{
 		throw new invalid_argument("index out of bound");
 	}
+	return this->datas[index];
+}
+// operators
+const FileRow& FileData::operator [](const unsigned int index) const
+{
+	if (index < 0 || index >= this->datas.size())
+	{
+		throw new invalid_argument("index out of bound");
+	}
+	return this->datas[index];
+}
+
+// other public function
+const bool FileData::is_empty() const
+{
+	return this->datas.size() == 0 ? true : false;
+}
+
+const int FileData::size() const
+{
+	return this->datas.size();
 }
 
 // protected functions
@@ -97,7 +113,6 @@ void FileData::init(const string filename)
 		{
 			FileRow data(row);
 			this->datas.push_back(data);
-			cout << data << endl;
 		}
 		file.close();
 	}

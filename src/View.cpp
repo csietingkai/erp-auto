@@ -1,12 +1,4 @@
-#include <iostream>
-#include <fstream>
-
 #include "View.h"
-#include "FileData.h"
-
-using namespace std;
-using namespace Gtk;
-using namespace Glib;
 
 // constructors
 View::View()
@@ -50,7 +42,7 @@ void View::set_attribute()
 	
 	sbox1.set_border_width(SPACING_BORDER_SIZE);
 	
-	ety_filename.set_sensitive(false);
+	ety_filename.set_sensitive(false);	// can not input
 	ety_filename.set_text(filename);
 	
 	btn_select_file.set_label(STR_SELECT_FILE);
@@ -58,7 +50,7 @@ void View::set_attribute()
 	sbox2.set_border_width(SPACING_BORDER_SIZE);
 	
 	btnbox_start_and_close.set_spacing(BUTTON_SPACING_SIZE);
-	btnbox_start_and_close.set_layout(Gtk::BUTTONBOX_END);
+	btnbox_start_and_close.set_layout(Gtk::BUTTONBOX_END);	// right align
 	
 	btn_start.set_label(STR_START);
 	
@@ -81,6 +73,11 @@ void View::set_signal_handler()
 	{
 		on_btn_close_click();
 	});
+	
+	this->signal_key_press_event().connect(sigc::mem_fun
+	( 
+		*this, &View::on_key_press 
+	));
 }
 
 // private functions
@@ -123,13 +120,17 @@ void View::on_btn_select_click()
 
 void View::on_btn_start_click()
 {
-	cout << file_full_path << endl;
 	if(!file_full_path.empty())
 	{
 		// minimize the window
 		//iconify();
 		
-		FileData data(file_full_path);
+		FileData datas(file_full_path);
+		
+		if (!datas.is_empty())
+		{
+			this->auto_action(datas);
+		}
 	}
 }
 
@@ -138,8 +139,24 @@ void View::on_btn_close_click()
 	close();
 }
 
+const bool View::on_key_press(GdkEventKey* event)
+{
+	cout << event->keyval << ' ';
+	cout << event->hardware_keycode << ' ';
+	cout << event->state << endl;
+	return false;
+}
+
 void View::set_filename(const string name)
 {
 	// show the select file name
 	ety_filename.set_text(name);
+}
+
+void View::auto_action(const FileData datas)
+{
+	for (int i = 0; i < datas.size(); i++)
+	{
+		cout << datas[i] << endl;
+	}
 }

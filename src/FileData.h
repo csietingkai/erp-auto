@@ -51,7 +51,14 @@ class FileData
 		FileData(const string filename);
 		
 		// getters
-		const FileRow get(const int index);
+		const FileRow get(const unsigned int index);
+		
+		// operators
+		const FileRow& operator [](const unsigned int index) const;
+		
+		// other public function
+		const bool is_empty() const;
+		const int size() const;
 	
 	protected:
 		void init(const string filename);
