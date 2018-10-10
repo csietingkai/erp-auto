@@ -1,10 +1,12 @@
 # 
 Author: Ting-Kai Hu
 
-Finish Date: 2018-0
+Finish Date: NULL
 
 ## Abstract
+Can not finish this project.
+This project is dead.
 
-
-## Usage
-### Encoder (class)
+## Difficulty (in View.cpp line 160)
+I got all data in "Book1-1.csv", but it contains chinese characters, which I can not handle right now.
+And I can not find out the way to print data to other application either.

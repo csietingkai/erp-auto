@@ -157,6 +157,7 @@ void View::auto_action(const FileData datas)
 {
 	for (int i = 0; i < datas.size(); i++)
 	{
+		// TODO ouptut datas into other application, and datas contain chinese character, which I can not handle currently
 		cout << datas[i] << endl;
 	}
 }
